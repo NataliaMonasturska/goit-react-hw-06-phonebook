@@ -10,7 +10,7 @@ export const ContactForm = () => {
   const [number, setNumber] = useState('')
   const dispatch = useDispatch();
   const items = useSelector(state => state.contacts.items)
-  
+
   const handleChangeInput = event => {
     if (event.target.name === 'name') {
       setName(event.target.value)
@@ -26,10 +26,11 @@ export const ContactForm = () => {
     const dobbleName = items.find(
       item => item.name.toLowerCase() === nameNormalized
     );
-    dobbleName
-      ? Notiflix.Notify.failure(`${name} is already in contacts`)
-      :
-      dispatch(addContact(name, number));
+    if (dobbleName) {
+      Notiflix.Notify.failure(`${name} is already in contacts`);
+      return
+    }
+    dispatch(addContact(name, number));
     setName('')
     setNumber('')
   };
